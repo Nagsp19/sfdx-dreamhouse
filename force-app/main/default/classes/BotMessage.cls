@@ -6,6 +6,7 @@ public virtual class BotMessage {
     @AuraEnabled public List<BotItem> items { get;set; }
     @AuraEnabled public List<BotMessageButton> buttons { get;set; }
     @AuraEnabled public String imageURL { get;set; }
+/*test comments naga*/
 
     public BotMessage() {
     }
