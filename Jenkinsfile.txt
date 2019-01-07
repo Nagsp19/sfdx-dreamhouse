@@ -1,7 +1,6 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
 node {
-
     def BUILD_NUMBER=env.BUILD_NUMBER
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
@@ -54,5 +53,14 @@ node {
         stage('collect results') {
             junit keepLongStdio: true, testResults: 'tests/**/*-junit.xml'
         }
+        
+        stage('Delete Test Org') {
+        	timeout(time: 120, unit: 'SECONDS') {
+            	rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:org:delete --targetusername ${SFDC_USERNAME} --noprompt"
+            	if (rc != 0) {
+                	error 'org deletion request failed'
+            	}
+        	}
+    	}
     }
 }
